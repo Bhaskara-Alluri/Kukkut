@@ -1,0 +1,25 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "Web_UI"
+    },
+    {
+      "path": "Mobile_UI"
+    },
+    {
+      "path": "API"
+    },
+    {
+      "path": "Database"
+    },
+    {
+      "path": "Infra"
+    },
+    {
+      "path": "Requirements"
+    }
+  ]
+}

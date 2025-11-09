@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "API: Install deps",
+      "type": "shell",
+      "command": "pip install -r requirements.txt"
+    },
+    {
+      "label": "API: Run FastAPI (uvicorn)",
+      "type": "shell",
+      "command": "uvicorn API.main:app --reload"
+    }
+  ]
+}
