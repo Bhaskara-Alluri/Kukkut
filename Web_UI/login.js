@@ -1,71 +1,98 @@
-// Web_UI/login.js
-const API = (window.API_BASE_URL || "http://127.0.0.1:8000").replace(/\/$/, "");
-const $ = (s) => document.querySelector(s);
+// login.js
 
-function wireUp() {
-  const form = $("#loginForm");
-  const user = $("#username");
-  const pw = $("#password");
-  const toggle = $("#togglePw");
+import { saveToken } from "./auth.js";
 
-  if (!form || !user || !pw) {
-    console.error("Login wiring: missing elements", { form: !!form, user: !!user, pw: !!pw });
+// Use BASE_API_URL from config.js if available, otherwise default
+const API_BASE = typeof BASE_API_URL !== "undefined"
+  ? BASE_API_URL
+  : "http://127.0.0.1:8000";
+
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("login.js loaded");
+
+  const form = document.getElementById("loginForm");
+  const usernameInput = document.getElementById("username");
+  const passwordInput = document.getElementById("password");
+  const msgEl = document.getElementById("msg");
+  const togglePwBtn = document.getElementById("togglePw");
+
+  if (!form) {
+    console.error("loginForm not found");
     return;
   }
 
-  if (toggle) {
-    toggle.addEventListener("click", () => {
-      pw.type = (pw.type === "password") ? "text" : "password";
-      toggle.textContent = (pw.type === "password") ? "Show" : "Hide";
+  // Toggle password visibility
+  if (togglePwBtn && passwordInput) {
+    togglePwBtn.addEventListener("click", () => {
+      const isPw = passwordInput.type === "password";
+      passwordInput.type = isPw ? "text" : "password";
+      togglePwBtn.textContent = isPw ? "Hide" : "Show";
     });
   }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    showMsg(""); // clear
+    msgEl.textContent = "";
+    msgEl.classList.remove("error", "success");
 
-    const username = user.value.trim();
-    const password = pw.value;
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value;
 
     if (!username || !password) {
-      return showMsg("Enter user id and password.", true);
+      msgEl.textContent = "Please enter username and password.";
+      msgEl.classList.add("error");
+      return;
     }
+
+    const url = `${API_BASE}/auth/login`;   // ✅ correct endpoint
+    console.log("Calling login API:", url);
 
     try {
-      const res = await fetch(`${API}/auth/login`, {
+      const resp = await fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }), // must match FastAPI model
       });
-      if (!res.ok) {
-        const txt = await res.text().catch(() => "");
-        throw new Error(txt || `HTTP ${res.status}`);
-      }
-      const data = await res.json();
-      if (!data?.token) throw new Error("Missing token in response");
 
-      sessionStorage.setItem("auth_token", data.token);
-      showMsg("Signed in.");
-      setTimeout(() => { window.location.href = "./index.html"; }, 300);
+      console.log("Status:", resp.status);
+      const data = await resp.json().catch(() => ({}));
+      console.log("Response JSON:", data);
+
+      if (!resp.ok) {
+        const detail = data.detail || "Sign-in failed.";
+        msgEl.textContent = `Sign-in failed: ${detail}`;
+        msgEl.classList.add("error");
+        return;
+      }
+
+      if (!data.access_token) {
+        console.error("Login response missing access_token:", data);
+        msgEl.textContent = "Sign-in failed: Missing token in response";
+        msgEl.classList.add("error");
+        return;
+      }
+
+      // Store token & user
+      //localStorage.setItem("auth_Token", data.access_token);
+	  
+	  saveToken(data.access_token, true); 
+	  
+      if (data.user) {
+        localStorage.setItem("authUser", JSON.stringify(data.user));
+      }
+
+      msgEl.textContent = data.message || "Login successful!";
+      msgEl.classList.add("success");
+
+      // Redirect to main page on 127.0.0.1:5500
+      window.location.href = "/index.html";
+
     } catch (err) {
-      console.error("Login error:", err);
-      showMsg(`Sign-in failed: ${err.message}`, true);
+      console.error("Network error:", err);
+      msgEl.textContent = "Sign-in failed: " + err.message;
+      msgEl.classList.add("error");
     }
   });
-}
-
-function showMsg(text, isErr = false) {
-  const m = $("#msg");
-  if (!m) return;
-  m.textContent = text || "";
-  m.className = "msg" + (isErr ? " err" : " ok");
-}
-
-// Bind ASAP even if DOM is already ready
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", wireUp);
-} else {
-  wireUp();
-}
-
-console.log("login.js loaded; API =", API);
+});

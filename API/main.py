@@ -1,121 +1,95 @@
-# API/main.py
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from datetime import datetime, timedelta
-import base64
-from pydantic import BaseModel, EmailStr, Field
+from passlib.hash import bcrypt
+import mysql.connector
+from dotenv import load_dotenv
+import os
 from typing import Optional
-from fastapi import HTTPException, Header
-import itertools
 
-app = FastAPI(title="Mobile App API", version="0.1.0")
+load_dotenv()
+
+app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "http://127.0.0.1",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:5500",
+    "http://127.0.0.1:5500",
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:5500", "http://localhost:5500"],  # add other dev ports if needed
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-@app.get("/health")
-def health():
-    return {"status": "ok"}
+def get_connection():
+    return mysql.connector.connect(
+        host=os.getenv("DB_HOST"),
+        port=int(os.getenv("DB_PORT")),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME"),
+    )
 
-# --- Temporary login model & route (replace with Cognito later) ---
-class LoginIn(BaseModel):
+class LoginRequest(BaseModel):
     username: str
     password: str
+    
+class UserOut(BaseModel):
+    id: int
+    username: str
+    firstname: Optional[str] = None
+    lastname: Optional[str] = None
 
-@app.post("/auth/login")
-def auth_login(body: LoginIn):
-    # DEMO ONLY: accept any non-empty credentials.
-    if not body.username or not body.password:
-        raise HTTPException(status_code=400, detail="Missing credentials")
+class LoginResponse(BaseModel):
+    success: bool
+    message: str
+    access_token: str
+    token_type: str = "bearer"
+    user: UserOut
 
-    # generate a simple demo token (NOT secure; just for wiring UI)
-    expires = (datetime.utcnow() + timedelta(hours=8)).isoformat()
-    token_payload = f"{body.username}|{expires}"
-    fake_token = base64.urlsafe_b64encode(token_payload.encode()).decode()
+@app.post("/auth/login", response_model=LoginResponse)
 
-    return {"token": fake_token, "expires": expires}
+def login(data: LoginRequest):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
 
-def decode_demo_token(token: str) -> dict:
-    try:
-        raw = base64.urlsafe_b64decode(token.encode()).decode()
-        username, expires = raw.split("|", 1)
-        return {"username": username, "expires": expires}
-    except Exception:
-        return {}
+    cursor.execute(
+        "SELECT id, username, password, firstname, lastname FROM users WHERE username = %s",
+        (data.username,),
+    )
+    user = cursor.fetchone()
 
-from fastapi import Header, HTTPException
+    cursor.close()
+    conn.close()
 
-@app.get("/me")
-def me(authorization: str | None = Header(default=None)):
-    # Expect: Authorization: Bearer <token>
-    if not authorization or not authorization.lower().startswith("bearer "):
-        raise HTTPException(401, "Missing bearer token")
-    token = authorization.split(" ", 1)[1].strip()
-    data = decode_demo_token(token)
-    if not data:
-        raise HTTPException(401, "Invalid token")
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid username or password")
 
-    # Optional: check expiry
-    try:
-        if datetime.utcnow() > datetime.fromisoformat(data["expires"]):
-            raise HTTPException(401, "Token expired")
-    except Exception:
-        raise HTTPException(401, "Bad token format")
+    if not bcrypt.verify(data.password, user["password"]):
+        raise HTTPException(status_code=401, detail="Invalid username or password")
 
-    return {"username": data["username"], "expires": data["expires"]}
+    payload = {
+        "sub": str(user["id"]),
+        "username": user["username"],
+    }
 
-# --- DEMO in-memory stores (replace with MongoDB later) ---
-_admin_seq = itertools.count(1)
-_farmer_seq = itertools.count(1)
-ADMINS: list[dict] = []
-FARMERS: list[dict] = []
-
-# (reuse your existing token decode + /me from earlier)
-# decode_demo_token() and /me route assumed present
-
-# --- Models ---
-class AdminIn(BaseModel):
-  name: str = Field(min_length=2)
-  email: EmailStr
-  phone: str = Field(min_length=6)
-  organization: Optional[str] = ""
-
-class FarmerIn(BaseModel):
-  name: str = Field(min_length=2)
-  phone: str = Field(min_length=6)
-  location: Optional[str] = ""
-  land_size_acres: float = 0.0
-
-def _require_auth(authorization: Optional[str]):
-  if not authorization or not authorization.lower().startswith("bearer "):
-    raise HTTPException(401, "Missing bearer token")
-  token = authorization.split(" ", 1)[1].strip()
-  user = decode_demo_token(token)
-  if not user:
-    raise HTTPException(401, "Invalid token")
-  return user
-
-@app.post("/admin/register")
-def admin_register(body: AdminIn, authorization: Optional[str] = Header(default=None)):
-  _require_auth(authorization)
-  # basic duplicate check (email)
-  if any(a["email"].lower() == body.email.lower() for a in ADMINS):
-    raise HTTPException(409, "Admin with this email already exists")
-  doc = body.dict()
-  doc["id"] = next(_admin_seq)
-  ADMINS.append(doc)
-  return {"id": doc["id"], "message": "admin registered"}
-
-@app.post("/farmer/register")
-def farmer_register(body: FarmerIn, authorization: Optional[str] = Header(default=None)):
-  _require_auth(authorization)
-  doc = body.dict()
-  doc["id"] = next(_farmer_seq)
-  FARMERS.append(doc)
-  return {"id": doc["id"], "message": "farmer registered"}
+    return LoginResponse(
+        success=True,
+        message=f"Welcome {user['firstname'] or user['username']}!",
+        access_token="dummy-token-for-now",
+        user=UserOut(
+            id=user["id"],
+            username=user["username"],
+            firstname=user.get("firstname"),
+            lastname=user.get("lastname"),
+        ),
+    )
