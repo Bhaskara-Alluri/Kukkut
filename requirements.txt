@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+mangum
+motor
+python-jose[cryptography]
+pydantic
+httpx
+boto3

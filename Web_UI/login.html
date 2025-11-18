@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Kukkut Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="./styles.css" rel="stylesheet" />
+  <script defer src="./config.js"></script>
+  <script defer src="./login.js"></script>
+</head>
+<body class="login-layout">
+  <div class="login-container">
+    
+    <!-- LEFT SIDE -->
+    <div class="login-left">
+      <div class="brand-box">
+        <img src="./assets/kukkut-logo.png" alt="Kukkut Logo" class="logo-large" />
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="login-right">
+      <form id="loginForm" class="auth-card">
+        <h2 class="login-title">Sign In</h2>
+
+        <label>User ID (email)
+          <input id="username" type="email" autocomplete="username" required />
+        </label>
+
+        <label>Password
+          <div class="password-wrap">
+            <input id="password" type="password" autocomplete="current-password" required minlength="6" />
+            <button type="button" id="togglePw" class="linklike">Show</button>
+          </div>
+        </label>
+
+        <div class="link-row">
+		  <a href="#" class="forgot-link">Forgot Password?</a>
+		  <a href="#" class="signup-link">Sign Up</a>
+		</div>
+
+        <button type="submit">Sign In</button>
+        <p id="msg" class="msg"></p>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

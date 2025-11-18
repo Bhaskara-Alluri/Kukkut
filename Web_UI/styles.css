@@ -1,0 +1,366 @@
+/* --- auth page styles --- */
+.auth-shell { min-height: 100dvh; display:grid; place-items:center; padding:24px; }
+.auth-card { width:min(380px, 92vw); border:1px solid #ddd; border-radius:14px; padding:20px; background:#fff0; box-shadow: 0 6px 20px rgba(0,0,0,.05); }
+.auth-card h1 { margin:0 0 12px; }
+label { display:block; margin:10px 0; }
+input[type="email"], input[type="password"] { width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; }
+.password-wrap { display:flex; gap:8px; align-items:center; }
+.password-wrap input { flex:1; }
+.linklike { background:none; border:none; color:#2d6cdf; cursor:pointer; padding:4px 6px; }
+.row { display:flex; align-items:center; gap:8px; }
+.msg { min-height:1.2em; }
+.ok { color:green; }
+.err { color:#b00020; }
+/* layout + cards (matches login look) */
+.topbar { display:flex; justify-content:space-between; align-items:center; padding:16px 24px; }
+.top-actions button { padding:10px 14px; border:0; border-radius:10px; background:#2d6cdf; color:#fff; cursor:pointer; }
+.layout { display:grid; grid-template-columns: 280px 1fr; gap:16px; padding:0 24px 24px; }
+.card { border:1px solid #ddd; border-radius:14px; padding:16px; background:#fff0; box-shadow:0 6px 20px rgba(0,0,0,.05); }
+
+/* sidebar tree */
+.sidebar-title { margin:0 0 10px; }
+.tree { list-style:none; padding:0; margin:0; }
+.tree-item { margin-bottom:8px; }
+.tree-toggle { width:100%; text-align:left; background:none; border:0; padding:8px; border-radius:10px; cursor:pointer; }
+.tree-toggle:hover { background:#f1f5ff; }
+.tree-children { list-style:none; margin:6px 0 0 22px; padding:0; }
+.tree-children a { display:block; padding:6px 8px; border-radius:8px; text-decoration:none; color:inherit; }
+.tree-children a:hover { background:#eef2ff; }
+
+/* content area */
+.content h2 { margin-top:0; }
+.content-body .row { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+label { display:block; margin:10px 0; }
+input, select, textarea { width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; }
+button.primary { padding:10px 14px; border:0; border-radius:10px; background:#2d6cdf; color:#fff; cursor:pointer; }
+.meta { color:#666; font-size:12px; }
+
+/* caret rotation for collapsible */
+.tree-item .caret { display:inline-block; width:1em; }
+.tree-item:not(.expanded) .caret { transform:rotate(-90deg); }
+.tree-item:not(.expanded) .tree-children { display:none; }
+
+/* vertical single-field rows */
+.form-vertical label { display:block; margin:12px 0; }
+.form-vertical input, .form-vertical select, .form-vertical textarea {
+  width:100%; padding:10px; border-radius:8px; border:1px solid #ccc;
+}
+
+/* section boxes */
+.section { margin-bottom:16px; }
+.section-title { margin:0 0 8px; font-size:1rem; font-weight:600; }
+
+/* --- brand styling --- */
+.brand-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.brand-name {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2d6cdf;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+/* === LOGIN LAYOUT (SIDE BY SIDE) === */
+.login-layout {
+  margin: 0;
+  height: 100vh; /* full viewport height */
+  overflow: hidden; /* no scrolling */
+  font-family: ui-sans-serif, system-ui, Arial;
+  background-color: #f8f9fc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* left + right */
+  width: 80%;
+  max-width: 1000px;
+  height: 80vh;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+/* left brand section */
+.login-left {
+  background: linear-gradient(135deg, #2d6cdf 0%, #1f4fb5 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.brand-box {
+  text-align: center;
+}
+.logo-large {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #fff;
+  padding: 10px;
+  box-shadow: 0 4px 20px rgba(255,255,255,0.3);
+}
+.brand-name {
+  margin-top: 20px;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* right login form */
+.login-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+}
+.auth-card {
+  width: 80%;
+  max-width: 320px;
+}
+.login-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* === LOGIN LAYOUT ENHANCEMENTS === */
+.logo-large {
+  width: 225px;   /* increased 150% from 150px */
+  height: 225px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #fff;
+  padding: 10px;
+  box-shadow: 0 4px 20px rgba(255,255,255,0.3);
+}
+
+/* remove brand name spacing (since we dropped the label) */
+.brand-box {
+  text-align: center;
+}
+
+/* spacing tweaks */
+.login-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* forgot password link */
+.forgot-container {
+  text-align: right;
+  margin: 6px 0 16px;
+}
+.forgot-link {
+  font-size: 0.9rem;
+  color: #2d6cdf;
+  text-decoration: none;
+}
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+/* combined link row */
+.link-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 6px 0 16px;
+}
+
+.forgot-link,
+.signup-link {
+  font-size: 0.9rem;
+  color: #2d6cdf;
+  text-decoration: none;
+}
+
+.forgot-link:hover,
+.signup-link:hover {
+  text-decoration: underline;
+}
+/* === Global Kukkut header (used on all pages except login) === */
+:root{
+  /* Set header height: 1 inch ≈ 96px, 1.5 inch ≈ 144px */
+  --header-height: 96px;            /* change to 144px for ~1.5" */
+  --brand-blue-start: #2d6cdf;
+  --brand-blue-end:   #1f4fb5;
+}
+
+.app-header {
+  position: sticky;                 /* stays at top when scrolling */
+  top: 0;
+  height: var(--header-height);
+  display: grid;
+  grid-template-columns: auto 1fr auto; /* logo | spacer | right actions */
+  align-items: center;
+  gap: 16px;
+  padding: 0 24px;
+  background: linear-gradient(135deg, var(--brand-blue-start), var(--brand-blue-end));
+  color: #fff;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.app-logo {
+  height: calc(var(--header-height) - 28px); /* leave nice padding */
+  width: auto;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 50%;
+  padding: 6px;
+  box-shadow: 0 2px 10px rgba(255,255,255,0.3);
+}
+
+.app-brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: .3px;
+  opacity: .95;
+}
+
+.app-actions > * {
+  margin-left: 8px;
+}
+
+.app-actions .btn {
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  cursor: pointer;
+}
+.app-actions .btn:hover { background: rgba(255,255,255,0.25); }
+
+/* Page body wrapper under header */
+.app-main {
+  padding: 16px 24px;
+}
+
+/* Keep your sidebar/content layout working with new header */
+.layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 16px;
+}
+
+/* Login page keeps its own layout — do not apply .app-header there */
+
+/* ===== KUKKUT GLOBAL HEADER WITH LEFT NOTCH AROUND LOGO ===== */
+:root{
+  /* Bar height (you can tweak) */
+  --header-height: 96px;
+  /* Logo size and gap spec (1 cm = requested gap) */
+  --logo-size: 100px;         /* logo diameter; enlarge/shrink as needed */
+  --logo-gap: 0.82cm;            /* exact 1 cm gap */
+  /* Derived: notch radius = logo radius + gap */
+  --notch-radius: calc((var(--logo-size) / 2) + var(--logo-gap));
+  /* Spacing of logo from the very left/top */
+  --logo-left: 16px;
+  --logo-top-offset: 0px;     /* fine-tune vertical alignment if needed */
+  /* Brand colors */
+  --brand-blue-start: #2d6cdf;
+  --brand-blue-end:   #1f4fb5;
+  /* Page background (used to carve the notch) */
+  --page-bg: #f8f9fc;
+  --bar-top-offset: 12px;  /* moves the entire blue bar down by ~12px */
+}
+
+/* Header shell (position context for logo + bar) */
+.kk-header {
+  position: relative;
+  height: var(--header-height);
+  background: var(--page-bg);
+}
+
+/* The blue bar runs left→right; we’ll cut a circular notch on the left */
+.kk-bar {
+  position: absolute;
+  top: var(--bar-top-offset);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, var(--brand-blue-start), var(--brand-blue-end));
+  border-top-right-radius: 28px;
+  border-bottom-right-radius: 28px;
+  overflow: hidden;
+}
+
+/* Circular notch: overlay a page-colored circle to "carve" space around the logo */
+.kk-bar::before {
+  content: "";
+  position: absolute;
+  width: calc(var(--notch-radius) * 2);
+  height: calc(var(--notch-radius) * 2);
+  border-radius: 50%;
+  background: var(--page-bg);     /* same as page background to simulate a cut-out */
+  /* Center of notch aligns to logo center */
+  left: calc(var(--logo-left) + (var(--logo-size) / 2) - var(--notch-radius));
+  top: calc( (var(--header-height) / 2) - var(--notch-radius) + var(--logo-top-offset) );
+  pointer-events: none;
+}
+
+/* Logo sits OUTSIDE the bar on the left */
+.kk-logo {
+  position: absolute;
+  left: var(--logo-left);
+  top: calc( (var(--header-height) - var(--logo-size)) / 2 + var(--logo-top-offset) );
+  width: var(--logo-size);
+  height: var(--logo-size);
+  object-fit: contain;
+  border-radius: 50%;
+  background: #fff;
+  padding: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  z-index: 2; /* above the bar */
+}
+
+/* Optional right-side actions area inside the bar */
+.kk-actions {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 1;
+}
+.kk-actions .btn {
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  cursor: pointer;
+}
+.kk-actions .btn:hover { background: rgba(255,255,255,0.25); }
+
+/* Page content under header */
+.app-main {
+  padding: 45px 50px;
+  background: var(--page-bg);
+}
+
+/* Keep your existing sidebar/content styles working */
+.layout { display: grid; grid-template-columns: 280px 1fr; gap: 16px; }
+
