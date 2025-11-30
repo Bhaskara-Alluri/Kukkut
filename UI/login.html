@@ -1,21 +1,26 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <title>Kukkut Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="./styles.css" rel="stylesheet" />
-  <script defer src="./config.js"></script>
-  <!-- <script defer src="./login.js"></script> -->
-  <script type="module" src="./login.js"></script>
+
+  <!-- CSS -->
+  <link href="/ui/styles.css" rel="stylesheet" />
+
+  <!-- Config + main login script -->
+  <script defer src="/ui/config.js"></script>
+  <script type="module" src="/ui/login.js"></script>
 </head>
+
 <body class="login-layout">
   <div class="login-container">
-    
+
     <!-- LEFT SIDE -->
     <div class="login-left">
       <div class="brand-box">
-        <img src="./assets/kukkut-logo.png" alt="Kukkut Logo" class="logo-large" />
+        <img src="/ui/assets/kukkut-logo.png" alt="Kukkut Logo" class="logo-large" />
       </div>
     </div>
 
@@ -36,9 +41,9 @@
         </label>
 
         <div class="link-row">
-		  <a href="#" class="forgot-link">Forgot Password?</a>
-		  <a href="#" class="signup-link">Sign Up</a>
-		</div>
+          <a href="#" class="forgot-link">Forgot Password?</a>
+          <a href="#" class="signup-link">Sign Up</a>
+        </div>
 
         <button type="submit">Sign In</button>
         <p id="msg" class="msg"></p>
@@ -46,4 +51,5 @@
     </div>
   </div>
 </body>
+
 </html>

@@ -6,3 +6,6 @@ python-jose[cryptography]
 pydantic
 httpx
 boto3
+mysql-connector-python
+passlib[bcrypt]
+email-validator

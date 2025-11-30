@@ -1,5 +1,9 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+.venv/
+uvicorn
+pip
+.env
 *.py[codz]
 *$py.class
 

@@ -46,6 +46,66 @@ button.primary { padding:10px 14px; border:0; border-radius:10px; background:#2d
   width:100%; padding:10px; border-radius:8px; border:1px solid #ccc;
 }
 
+/* Responsive grid alignment for section cards in vertical forms */
+.form-vertical .section.card {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap:14px 16px;
+  align-items:start;
+}
+.form-vertical .section.card .section-title {
+  grid-column:1 / -1; /* span full width */
+  margin:0 0 4px;
+}
+.form-vertical .section.card label {
+  margin:0; /* grid handles spacing */
+  display:flex;
+  flex-direction:column;
+  font-size:.9rem;
+}
+.form-vertical .section.card label input,
+.form-vertical .section.card label select,
+.form-vertical .section.card label textarea { width:100%; }
+
+/* Force vertical stacking for sections tagged with .stack */
+.form-vertical .section.card.stack {
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  box-sizing:border-box;
+}
+.form-vertical .section.card.stack label { margin:0; }
+.form-vertical .section.card.stack label input,
+.form-vertical .section.card.stack label select { width:100%; box-sizing:border-box; }
+
+/* Fieldset styling (phone) */
+fieldset.phone-fieldset {
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:8px 12px 10px;
+  margin:0;
+  background:#fff0;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+fieldset.phone-fieldset legend {
+  font-size:.75rem;
+  font-weight:600;
+  padding:0 4px;
+  letter-spacing:.5px;
+}
+fieldset.phone-fieldset .phone-row { display:flex; gap:12px; }
+fieldset.phone-fieldset .phone-row label { flex:1; margin:0; }
+fieldset.phone-fieldset .phone-row .cc-label { flex:0 0 140px; }
+@media (max-width: 720px) {
+  fieldset.phone-fieldset .phone-row { flex-direction:column; }
+  fieldset.phone-fieldset .phone-row .cc-label { flex:initial; }
+}
+
+/* Fine-tune email hint alignment inside labels */
+label .email-hint { margin-top:4px; }
+
 /* section boxes */
 .section { margin-bottom:16px; }
 .section-title { margin:0 0 8px; font-size:1rem; font-weight:600; }
@@ -354,6 +414,17 @@ button.primary { padding:10px 14px; border:0; border-radius:10px; background:#2d
   cursor: pointer;
 }
 .kk-actions .btn:hover { background: rgba(255,255,255,0.25); }
+/* Home icon inside kk-bar (placed after logo notch) */
+.kk-home {
+  position:absolute;
+  left: calc(var(--logo-left) + var(--logo-size) + 40px); /* moved further right (24px -> 40px) */
+  top:50%;
+  transform:translateY(-50%);
+  z-index:1;
+}
+.kk-home a { display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:8px; text-decoration:none; }
+.kk-home a:hover { background:rgba(255,255,255,0.18); }
+.kk-home img, .kk-home svg { width:22px; height:22px; }
 
 /* Page content under header */
 .app-main {
@@ -363,4 +434,76 @@ button.primary { padding:10px 14px; border:0; border-radius:10px; background:#2d
 
 /* Keep your existing sidebar/content styles working */
 .layout { display: grid; grid-template-columns: 280px 1fr; gap: 16px; }
+
+/* Phone field side-by-side layout */
+.phone-fieldset .phone-row { display:flex; gap:12px; align-items:flex-end; }
+.phone-fieldset .phone-row label { margin:0; }
+.phone-fieldset .cc-label { flex:0 0 150px; }
+.phone-fieldset .num-label { flex:1; }
+@media (max-width: 640px) {
+  .phone-fieldset .phone-row { flex-direction:column; }
+  .phone-fieldset .cc-label { flex: initial; }
+}
+
+/* Email validation hints */
+.email-hint { display:block; font-size:11px; margin-top:4px; }
+.email-hint.ok { color:green; }
+.email-hint.err { color:#b00020; }
+input.invalid { border-color:#b00020; }
+
+/* City field with manual override button */
+.city-field { display:flex; gap:8px; align-items:center; }
+.city-field select, .city-field input { flex:1; }
+.mini-btn { padding:6px 10px; border:1px solid #ccc; background:#f7f9fc; border-radius:8px; cursor:pointer; font-size:.75rem; }
+.mini-btn:hover { background:#eef2ff; }
+.mini-btn:disabled { opacity:.5; cursor:default; }
+
+/* Farmers listing table */
+.farmers-search { display:flex; gap:10px; margin-bottom:12px; }
+.farmers-search input { flex:1; }
+table.farmers-table { width:100%; border-collapse:collapse; font-size:.85rem; }
+table.farmers-table th, table.farmers-table td { padding:8px 10px; border-bottom:1px solid #eee; text-align:left; }
+table.farmers-table th { background:#f1f5ff; font-weight:600; }
+.farmers-table tr.selected { background:#f5f5f5; opacity:0.75; }
+.pagination { display:flex; gap:8px; align-items:center; margin-top:12px; }
+.pagination button { padding:6px 10px; border:1px solid #ccc; background:#fff; border-radius:8px; cursor:pointer; }
+.pagination button:disabled { opacity:.5; cursor:default; }
+
+/* Position pagination bottom-right within farmers app */
+#farmers-app { position:relative; padding-bottom:56px; }
+#farmers-app .pagination { position:absolute; right:0; bottom:0; margin-top:0; }
+#farmers-app .page-size { position:absolute; left:0; bottom:0; display:flex; align-items:center; gap:6px; }
+#farmers-app .page-size .ps-label { font-size:.75rem; font-weight:600; display:flex; align-items:center; gap:4px; }
+#farmers-app .page-size select { padding:4px 6px; border-radius:6px; border:1px solid #ccc; font-size:.75rem; }
+
+/* Top-right actions on farmers page */
+#farmers-app .top-actions-right { display:flex; justify-content:flex-end; margin-bottom:10px; }
+#farmers-app .top-actions-right .btn { padding:8px 12px; border:0; border-radius:10px; background:#2d6cdf; color:#fff; cursor:pointer; text-decoration:none; display:inline-block; }
+#farms-app .top-actions-right { display:flex; justify-content:flex-end; margin-bottom:10px; }
+#farms-app .top-actions-right .btn { padding:8px 12px; border:0; border-radius:10px; background:#2d6cdf; color:#fff; cursor:pointer; text-decoration:none; display:inline-block; }
+
+/* Disabled state for action buttons */
+.btn.disabled, a.btn.disabled { opacity:0.55; cursor:default; pointer-events:none; filter:grayscale(40%); }
+
+/* Farms list footer aligned like farmers */
+#farms-app .list-footer { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:8px 0; }
+#farms-app .list-footer .page-size { margin-left:0; }
+#farms-app .list-footer .pagination { margin-left:auto; }
+
+/* Users list footer alignment */
+#users-app .list-footer { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:8px 0; }
+#users-app .list-footer .page-size { margin-left:0; }
+#users-app .list-footer .pagination { margin-left:auto; }
+
+/* Sheds list positioning similar to farmers */
+#sheds-app { position:relative; padding-bottom:56px; }
+#sheds-app .pagination { position:absolute; right:0; bottom:0; margin-top:0; }
+#sheds-app .page-size { position:absolute; left:0; bottom:0; display:flex; align-items:center; gap:6px; }
+#sheds-app .page-size .ps-label { font-size:.75rem; font-weight:600; display:flex; align-items:center; gap:4px; }
+#sheds-app .page-size select { padding:4px 6px; border-radius:6px; border:1px solid #ccc; font-size:.75rem; }
+
+/* Home welcome message styling */
+.welcome-line { font-size:30px; font-weight:600; letter-spacing:.3px; margin:0 0 8px; color:#1f4fb5; line-height:1.15; }
+/* Home sub-instruction line */
+#menuLine { font-size:20px; }
 

@@ -9,7 +9,7 @@
     {
       "label": "API: Run FastAPI (uvicorn)",
       "type": "shell",
-      "command": "uvicorn API.main:app --reload"
+      "command": ".\\.venv\\Scripts\\python.exe -m uvicorn main:app --reload"
     }
   ]
 }

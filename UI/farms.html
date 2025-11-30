@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Farms</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="./styles.css" rel="stylesheet" />
+  <script defer src="./config.js"></script>
+  <script defer type="module" src="./farms.js"></script>
+  <script defer type="module" src="./auth.js"></script>
+</head>
+<body>
+  <header class="kk-header">
+    <img src="./assets/kukkut-logo.png" alt="Kukkut Logo" class="kk-logo" />
+    <div class="kk-bar">
+      <div class="kk-home">
+        <a href="./index.html" title="Home" aria-label="Home">
+          <img src="./assets/home.svg" alt="Home" />
+        </a>
+      </div>
+      <!-- Dashboard link intentionally omitted per requirement; home icon only -->
+      <div class="kk-actions">
+        <button id="logoutBtn" class="btn">Log out</button>
+      </div>
+    </div>
+  </header>
+  <div class="app-main">
+    <div class="layout">
+      <aside class="sidebar card">
+        <h3 class="sidebar-title">Menu</h3>
+        <ul class="tree">
+          <li class="tree-item expanded">
+            <button class="tree-toggle" aria-expanded="true"><span class="caret">▾</span> Administration</button>
+            <ul class="tree-children">
+              <li><a href="./farmers.html" class="nav-link">Farmers</a></li>
+              <li><a href="./farms.html" class="nav-link active">Farms</a></li>
+              <li><a href="./index.html#/farmer" class="nav-link">Register Farmer</a></li>
+            </ul>
+          </li>
+        </ul>
+      </aside>
+      <main class="content card">
+        <h2>Farms</h2>
+        <div id="farms-app">
+          <div class="farm-actions-right">
+            <a href="./farmers.html" class="btn" title="Link Farm">Link Farm</a>
+          </div>
+          <div class="farm-search">
+            <input id="searchInput" type="text" placeholder="Search farm name / city / state / PIN" />
+          </div>
+          <div id="tableWrap">
+            <table class="farmers-table" id="farmsTable">
+              <thead>
+                <tr>
+                  <th style="width:32px;">Select</th>
+                  <th>ID</th>
+                  <th>Farmer ID</th>
+                  <th>Farm Name</th>
+                  <th>City</th>
+                  <th>State</th>
+                  <th>PIN</th>
+                  <th>Size</th>
+                  <th>Sheds</th>
+                  <th>Created</th>
+                </tr>
+              </thead>
+              <tbody id="farmsTbody">
+                <tr><td colspan="9">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="page-size" id="pageSizeBox">
+            <label for="pageSizeSelect" class="ps-label">Rows:
+              <select id="pageSizeSelect">
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+              </select>
+            </label>
+          </div>
+          <div class="pagination" id="pager">
+            <button id="prevBtn" disabled>Prev</button>
+            <span id="pageInfo">Page 1</span>
+            <button id="nextBtn" disabled>Next</button>
+            <span id="totalInfo"></span>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

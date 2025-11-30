@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Dashboard</title>
+  <title>Sheds</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="./styles.css" rel="stylesheet" />
   <script defer src="./config.js"></script>
@@ -10,43 +10,40 @@
   <script type="module" defer src="./sidebar.js"></script>
 </head>
 <body>
-  <!-- Global Kukkut header -->
-  <!-- KUKKUT HEADER -->
   <header class="kk-header">
-    <!-- Logo outside the bar on the left -->
     <img src="./assets/kukkut-logo.png" alt="Kukkut Logo" class="kk-logo" />
-    <!-- Blue bar (with left circular notch + rounded right edge) -->
     <div class="kk-bar">
+      <div class="kk-home">
+        <a href="./index.html" title="Home" aria-label="Home">
+          <img src="./assets/home.svg" alt="Home" />
+        </a>
+      </div>
+      <!-- Dashboard link intentionally omitted per requirement; home icon only -->
       <div class="kk-actions">
         <button id="logoutBtn" class="btn">Log out</button>
       </div>
     </div>
   </header>
-
-  <!-- Your existing page content -->
   <div class="app-main">
     <div class="layout">
       <aside class="sidebar card">
-        <!-- (your existing menu / tree stays here) -->
         <h3 class="sidebar-title">Menu</h3>
         <ul class="tree">
           <li class="tree-item expanded">
             <button class="tree-toggle" aria-expanded="true">
-              <span class="caret">▾</span> Registration
+              <span class="caret">▾</span> Administration
             </button>
             <ul class="tree-children">
-              <li><a href="#/admin" class="nav-link" data-view="admin">Admin registration</a></li>
-              <li><a href="#/farmer" class="nav-link" data-view="farmer">Farmer registration</a></li>
+              <li><a href="#/farmers" class="nav-link" data-view="farmers">Farmers</a></li>
+              <li><a href="#/farms" class="nav-link" data-view="farms">Farms</a></li>
+              <li><a href="#/sheds" class="nav-link" data-view="sheds">Sheds</a></li>
             </ul>
           </li>
         </ul>
       </aside>
-
       <main class="content card">
-        <h2 id="content-title">Home</h2>
-        <div id="content-area" class="content-body">
-          <p class="meta">Select an option from the menu.</p>
-        </div>
+        <h2 id="content-title">Sheds</h2>
+        <div id="content-area" class="content-body"></div>
       </main>
     </div>
   </div>

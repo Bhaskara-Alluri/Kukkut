@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Link Farm</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="./styles.css" rel="stylesheet" />
+  <script defer src="./config.js"></script>
+  <script defer type="module" src="./farm-link.js"></script>
+  <script defer type="module" src="./auth.js"></script>
+  <script defer type="module" src="./sidebar.js"></script>
+</head>
+<body>
+  <header class="kk-header">
+    <img src="./assets/kukkut-logo.png" alt="Kukkut Logo" class="kk-logo" />
+    <div class="kk-bar">
+      <div class="kk-home">
+        <a href="./index.html" title="Home" aria-label="Home">
+          <img src="./assets/home.svg" alt="Home" />
+        </a>
+      </div>
+      <!-- Dashboard link intentionally omitted per requirement; home icon only -->
+      <div class="kk-actions">
+        <button id="logoutBtn" class="btn">Log out</button>
+      </div>
+    </div>
+  </header>
+  <div class="app-main">
+    <div class="layout">
+      <aside class="sidebar card">
+        <h3 class="sidebar-title">Menu</h3>
+        <ul class="tree">
+          <li class="tree-item expanded">
+            <button class="tree-toggle" aria-expanded="true"><span class="caret">▾</span> Administration</button>
+            <ul class="tree-children">
+              <li><a href="./index.html#/farmers" class="nav-link" data-view="farmers">Farmers</a></li>
+              <li><a href="./index.html#/farms" class="nav-link" data-view="farms">Farms</a></li>
+              <li><a href="./index.html#/sheds" class="nav-link" data-view="sheds">Sheds</a></li>
+            </ul>
+          </li>
+        </ul>
+      </aside>
+      <main class="content card">
+        <h2>Link Farm</h2>
+        <form id="farmLinkForm" class="form-vertical">
+          <section class="section card stack">
+            <h3 class="section-title">Farm Details</h3>
+            <label>Farm Name
+              <input id="farm_name" required maxlength="80" />
+            </label>
+            <label>Farm Size (in acres)
+              <input id="farm_size" type="number" min="0" step="0.01" required />
+            </label>
+            <label>Number of Sheds
+              <input id="shed_count" type="number" min="0" step="1" required />
+            </label>
+          </section>
+
+          <section class="section card stack">
+            <h3 class="section-title">Farm Address</h3>
+            <label>
+              <input type="checkbox" id="same_address" />
+              <span>Use same address as farmer</span>
+            </label>
+            <label>Street
+              <input id="farm_street" required maxlength="100" pattern="^[A-Za-z ,/\-]{1,100}$" title="Letters, spaces, comma (,), slash (/), hyphen (-) only" />
+            </label>
+            <label>City
+              <select id="farm_city" required disabled>
+                <option value="" disabled selected>Enter PIN first</option>
+              </select>
+            </label>
+            <label>State
+              <select id="farm_state" required>
+                <option value="" disabled selected>Select State / UT</option>
+                <option value="AP">Andhra Pradesh</option>
+                <option value="AR">Arunachal Pradesh</option>
+                <option value="AS">Assam</option>
+                <option value="BR">Bihar</option>
+                <option value="CT">Chhattisgarh</option>
+                <option value="GA">Goa</option>
+                <option value="GJ">Gujarat</option>
+                <option value="HR">Haryana</option>
+                <option value="HP">Himachal Pradesh</option>
+                <option value="JH">Jharkhand</option>
+                <option value="KA">Karnataka</option>
+                <option value="KL">Kerala</option>
+                <option value="MP">Madhya Pradesh</option>
+                <option value="MH">Maharashtra</option>
+                <option value="MN">Manipur</option>
+                <option value="ML">Meghalaya</option>
+                <option value="MZ">Mizoram</option>
+                <option value="NL">Nagaland</option>
+                <option value="OR">Odisha</option>
+                <option value="PB">Punjab</option>
+                <option value="RJ">Rajasthan</option>
+                <option value="SK">Sikkim</option>
+                <option value="TN">Tamil Nadu</option>
+                <option value="TG">Telangana</option>
+                <option value="TR">Tripura</option>
+                <option value="UP">Uttar Pradesh</option>
+                <option value="UT">Uttarakhand</option>
+                <option value="WB">West Bengal</option>
+                <option value="AN">Andaman and Nicobar Islands</option>
+                <option value="CH">Chandigarh</option>
+                <option value="DN">Dadra and Nagar Haveli and Daman and Diu</option>
+                <option value="DL">Delhi</option>
+                <option value="JK">Jammu and Kashmir</option>
+                <option value="LA">Ladakh</option>
+                <option value="LD">Lakshadweep</option>
+                <option value="PY">Puducherry</option>
+              </select>
+            </label>
+            <label>PIN
+              <input id="farm_pin" required pattern="\d{6}" inputmode="numeric" maxlength="6" title="Enter 6-digit PIN" />
+            </label>
+            <p id="farmPinMsg" class="meta"></p>
+          </section>
+
+          <div class="form-actions" style="display:flex; gap:10px; align-items:center;">
+            <button class="primary" type="submit">Save</button>
+            <button id="cancelBtn" type="button" class="primary" style="background:#888;">Cancel</button>
+          </div>
+          <p id="farmLinkMsg" class="meta"></p>
+        </form>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

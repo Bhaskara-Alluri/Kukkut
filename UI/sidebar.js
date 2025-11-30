@@ -1,4 +1,5 @@
-// Handles tree expand/collapse and simple view navigation
+// UI/sidebar.js
+// Handles tree expand/collapse and simple view navigation via hash routing.
 document.addEventListener("DOMContentLoaded", () => {
   // toggle tree nodes
   document.querySelectorAll(".tree-toggle").forEach(btn => {
@@ -12,10 +13,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // nav links
   document.querySelectorAll(".nav-link").forEach(a => {
     a.addEventListener("click", (e) => {
-      e.preventDefault();
       const view = a.dataset.view;
-      window.dispatchEvent(new CustomEvent("route:change", { detail: { view } }));
-      history.pushState({ view }, "", `#/${view}`);
+      if (view) {
+        e.preventDefault();
+        window.dispatchEvent(new CustomEvent("route:change", { detail: { view } }));
+        history.pushState({ view }, "", `#/${view}`);
+      } else {
+        // No data-view => allow normal navigation (e.g. farmers.html full page)
+      }
     });
   });
 
